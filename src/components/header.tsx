@@ -16,7 +16,7 @@ export default function Header({ children, ...rest }: HeaderProps) {
       <div className="ml-6 flex-1 flex flex-col gap-1">
         <div className="flex items-center">
           <a href="/">
-              <h1 className="text-xl font-bold">柒宇</h1>
+              <h1 className="text-xl font-bold">我</h1>
           </a>
           <div className="flex items-center ml-auto">
             <a className="sm:(static h-unset) absolute bottom-7 right-7 h-8" href="/rss.xml" aria-label="RSS">
@@ -24,7 +24,7 @@ export default function Header({ children, ...rest }: HeaderProps) {
             </a>
           </div>
         </div>
-        <div className="text-true-gray-500 text-sm">前端开发 / 动画 / 日语初心者</div>
+        <div className="text-true-gray-500 text-sm">欲语泪先流，物是人非事事休</div>
 
         <div className="text-xl mt-auto flex items-center gap-2">
           <a  href="https://github.com/QiYuOr2" aria-label="GitHub" title="GitHub">
