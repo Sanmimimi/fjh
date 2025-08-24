@@ -19,7 +19,7 @@ export default function Header({ children, ...rest }: HeaderProps) {
               <h1 className="text-xl font-bold">我</h1>
           </a>
           <div className="flex items-center ml-auto">
-            <a className="sm:(static h-unset) absolute bottom-7 right-7 h-8" href="/rss.xml" aria-label="RSS">
+            <a className="sm:(static h-unset) absolute bottom-7 right-7 h-8" href="/rss.xml" aria-label="RSS" target="_blank">
               <div className="i-mdi:rss w-6 h-6 text-xl" />
             </a>
           </div>
