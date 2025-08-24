@@ -1,0 +1,91 @@
+---
+import { getCollection, render } from "astro:content";
+import Comments from "@/components/comments";
+import Copyright from "@/components/copyright.astro";
+import TOC from "@/components/toc";
+import { visibleFilter, date, postURL, sortByDate } from "@/collections/posts";
+import PageLayout from '@/layouts/page.astro'
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+
+  return posts
+    .filter(visibleFilter)
+    .sort(sortByDate)
+    .map((post, index, originList) => ({
+      params: { slug: `${post.id}` },
+      props: { post, paginations: [originList[index - 1], originList[index + 1]] },
+    }));
+}
+
+const { post, paginations } = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+
+---
+<PageLayout title={`${post.data.title} | @柒宇`} description={post.data.description} tags={post.data.tags} post>
+    <h1>{post.data.title}</h1>
+    <div class="flex items-center gap-2">
+      <div font-bold text-stone>{date(post).split(" ")[0]}</div>
+
+      {Number(remarkPluginFrontmatter.minutesRead) > 1 && (
+        <div bg-stone-3 w-1 h-1 rounded-full></div>
+        <div font-bold text-stone>{`${Math.ceil(remarkPluginFrontmatter.minutesRead)} mins`}</div>
+      )}
+      
+    </div>
+
+    <article class="prose-stone dark:prose-invert">
+      <TOC headings={headings} />
+      <Content />
+      <Copyright url={postURL(post)} />
+    </article>
+
+
+    <div class="paginations" text-center mt-12>
+      {
+        paginations[1] &&  (
+          <div class="action">
+            <div class="title">上一篇</div>
+            <a class="to" href={postURL(paginations[1])}>{paginations[1].data.title}</a>
+          </div>
+        )
+      }
+
+      {
+        paginations[0] &&  (
+          <div class="action">
+            <div class="title">下一篇</div>
+            <a class="to" href={postURL(paginations[0])}>{paginations[0].data.title}</a>
+          </div>
+        )
+      }
+    </div>
+
+  <Comments client:load />
+
+  <script>
+    import mediumZoom from "medium-zoom";
+
+    mediumZoom('[data-zoomable]')
+    if (typeof window !== 'undefined') {
+      import("mermaid").then(({ default: mermaid }) => {
+        mermaid.initialize({ startOnLoad: true });
+      });
+    }
+  </script>
+
+  <style lang="less">
+  .action {
+    margin-bottom: 1.4rem;
+    .to {
+      display: inline-block;
+      margin-top: 0.5rem;
+      color: #000;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+  }
+  </style>
+</PageLayout>
+
+

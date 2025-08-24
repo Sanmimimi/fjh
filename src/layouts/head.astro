@@ -1,0 +1,85 @@
+---
+import { ClientRouter } from "astro:transitions";
+
+const { description, keywords = '' } = Astro.props
+
+---
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="qiyuor2" />
+<meta name="description" content={description || '柒宇的个人博客'} />
+<meta name="keywords" content={'柒宇,blog,frontend,前端,博客' + `,${keywords}`} />
+
+<meta property="og:title" content="@柒宇">
+<meta property="og:description" content="前端开发 / 动画 / 日语初心者">
+<meta property="og:url" content="https://blog.qiyuor2.me">
+<meta property="og:site_name" content="@柒宇">
+<meta property="og:image:alt" content="柒宇">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/48339849">
+<meta property="og:image:width" content="454">
+<meta property="og:image:height" content="454">
+<meta property="og:type" content="website">
+
+<script is:inline>
+  function applyTheme() {
+    let color = localStorage.getItem(/* import.meta.env.PUBLIC_COLOR_MODE */ '@qiyuor2/color-mode') ?? ''
+    if (!['dark', 'light'].includes(color)) {
+      const media = window.matchMedia('(prefers-color-scheme: dark)')
+      color = media.matches ? 'dark' : 'light'
+    }
+    document.documentElement.style.colorScheme = color
+    document.documentElement.classList.add(color)
+  }
+
+  function initBack() {
+    document.querySelectorAll('.back').forEach(back => {
+      back.addEventListener('click', (e) => {
+        e.preventDefault()
+        if (window.history.length > 1) {
+          history.back();
+        } else {
+          location.href = '/';
+        }
+      })
+    })
+  }
+
+  document.addEventListener('astro:page-load', applyTheme)
+  document.addEventListener('astro:page-load', initBack)
+  document.addEventListener('astro:after-swap', applyTheme)
+
+  document.addEventListener("astro:before-preparation", () => {
+    document.querySelector("#loading").classList.remove("hidden");
+  });
+  document.addEventListener("astro:after-preparation", () => {
+    document.querySelector("#loading").classList.add("hidden");
+  });
+
+
+
+</script>
+
+<script>
+  // qiyuor2.github.io/blog/ 跳转 blog.qiyuor2.me/
+  if (location.hostname === 'qiyuor2.github.io') {
+    location.href = 'https://blog.qiyuor2.me' + location.pathname.replace(/^\/blog/, '')
+  }
+</script>
+
+<link rel="preconnect" href="https://giscus.app" crossorigin />
+<link rel="dns-prefetch" href="https://giscus.app" />
+
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<script type="module" src="https://cdn.jsdelivr.net/npm/giscus@1.2.8/+esm" defer></script>
+
+<ClientRouter />
+
+
+<!-- <link href="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script> -->

@@ -1,0 +1,29 @@
+---
+import PageLayout from '@/layouts/page.astro'
+import { PostList } from '@/components/post-list.tsx'
+import { visibleFilter, getPostCreatedYear } from '@/collections/posts';
+import { externalPosts } from '@/externals';
+import { getCollection } from 'astro:content';
+
+if (!Object.groupBy) {
+  Object.groupBy = function (arr: any[], key: any) {
+    return arr.reduce((acc, item) => {
+      const group = key(item);
+      if (!acc[group]) {
+        acc[group] = [];
+      }
+      acc[group].push(item);
+      return acc;
+    }, {});
+  };
+}
+
+const _posts = await getCollection('posts')
+
+const posts = Object.groupBy([..._posts.filter(visibleFilter), ...externalPosts], getPostCreatedYear)
+
+---
+
+<PageLayout post>
+  <PostList posts={posts} />
+</PageLayout>
