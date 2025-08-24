@@ -54,11 +54,11 @@ export default function Comments() {
       <div ref={commentsContainer} className="py-7 sm:w-[95%]">
         {!loaded && <div className='w-full text-center'>评论组件加载中...</div>}
         <Giscus
-          id="comments"
-          repo="QiYuOr2/blog"
-          repoId="R_kgDOGlnN5w"
+          id="pathname"
+          repo="Sanmimimi/pinlun"
+          repoId="R_kgDOPhhjUg"
           category="Announcements"
-          categoryId="DIC_kwDOGlnN584COx7K"
+          categoryId="DIC_kwDOPhhjUs4CuaF4"
           mapping="url"
           reactions-enabled="1"
           emitMetadata="0"
@@ -70,4 +70,5 @@ export default function Comments() {
       </div>
     </div>
   )
+
 }
